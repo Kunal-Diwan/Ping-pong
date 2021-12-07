@@ -1,0 +1,62 @@
+<html> 
+ <head> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.dom.js"></script> 
+ </head> 
+ <body> 
+  <script>
+      let pos=0;
+      let ballPos;
+      let vel;
+      let speed;
+      let score=0;
+      function setup(){
+        createCanvas(window.innerWidth-50,window.innerHeight-50);
+        vel=p5.Vector.random2D();
+        vel.mult(5);
+        ballPos=createVector();
+        speed=height/50;
+      }
+      function mouseDragged(){
+        pos=mouseY-height/2;
+        pos=constrain(pos,-(height/2-20),height/2-20);
+      }
+      mouseClicked=()=>{mouseDragged()};
+      function draw(){
+        background(0,100);
+        fill(255);
+        stroke(255);
+        textSize(20);
+        text(score,50,50);
+        translate(width/2,height/2);
+        
+        rectMode(CENTER);
+        rect(20-width/2,pos,10,height/8);
+        rect(width/2-20,pos,10,height/8);
+        fill(255,0,0);
+        stroke(255,0,0);
+        circle(ballPos.x,ballPos.y,20);
+        
+        ballPos.add(vel);
+        check();
+      }
+      function check(){
+        if(ballPos.x>width/2 || ballPos.x<-width/2){
+          ballPos.x=0;
+          ballPos.y=0;
+          vel=p5.Vector.random2D();
+          vel.mult(5);
+          score=0;
+        }
+        if(ballPos.y-height/2>-10 || ballPos.y+height/2<10){
+          vel.y*=-1;
+        }
+        if((ballPos.y-10>pos-height/8) && (ballPos.y+10<pos+height/8) && (ballPos.x-15<(20-width/2) || ballPos.x+15>width/2-20)){
+          vel.x*=-1;
+          score++;
+        }
+      }
+    </script> 
+ </body>
+</html>
